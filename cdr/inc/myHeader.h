@@ -26,7 +26,7 @@ struct user
 	char download[10];
 	char upload[10];
 	char thirdpartymsisdn[20];
-	char thirdpartyopbran[20];
+	char thirdpartyopbrand[20];
 };
 
 typedef struct user USER;
@@ -36,6 +36,10 @@ void logIn();
 void signUp();
 int userAllowed(char[], char[]);
 
-void billingMenu();
+int billingMenu();
+
+void billing(USER*);
+
+USER* process_cdr();
 
 
