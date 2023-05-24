@@ -66,7 +66,7 @@ void signUp()
 	char password[MAX_LENGTH];
 	char re_password[MAX_LENGTH];
 	FILE *fp = NULL;
-	fp = fopen("/home1/trainer02/shilpa/cdr/data/user_details.dat", "a+");
+	fp = fopen("/home1/trainer02/Call-Data-Record/cdr/data/user_details.dat", "a+");
 	if(fp == NULL)
 	{
 		printf("\n\nPlease try later!!\n\n");
@@ -120,7 +120,7 @@ int userAllowed(char user_name[], char password[])
 	char exist_password[MAX_LENGTH];
 	int flag = 1;
 	FILE *fp;
-	fp = fopen("/home1/trainer02/shilpa/cdr/data/user_details.dat","r");
+	fp = fopen("/home1/trainer02/Call-Data-Record/cdr/data/user_details.dat","r");
 	if(fp == NULL)
 	{
 		printf("\n\n Please try later\n\n");
@@ -159,7 +159,7 @@ void logIn()
 	int flag = 0;
 
 	FILE *fp = NULL;
-	fp = fopen("/home1/trainer02/shilpa/cdr/data/user_details.dat", "r");
+	fp = fopen("/home1/trainer02/Call-Data-Record/cdr/data/user_details.dat", "r");
 
 	if(fp == NULL)
 	{
@@ -181,6 +181,8 @@ void logIn()
 		  { 
 			printf("\n\nLogin Successful\n\n");
 			flag = 1;
+			billingMenu();
+			printf("\n\nLogout Successful\n\n");
 			sleep(2);
 			break;
 		  } 
@@ -212,11 +214,14 @@ int billingMenu()
 {
 	int ch;
 	USER *usr = NULL;
+	while(1)
+	{
 	printf("\n\n1. Process CDR File");
 	printf("\n\n2. Billing");
 	printf("\n\n3. Logout");
-	printf("\nChoice: ");
+	printf("\n\nChoice: ");
 	scanf("%d", &ch);
+
 	switch(ch)
 	{
 		case 1: 
@@ -230,7 +235,8 @@ int billingMenu()
 				}
 				else
 				{
-					printf("Processed the file\n");
+					printf("\n\nProcessed the file\n");
+					
 				}
 			}
 			else
@@ -239,7 +245,7 @@ int billingMenu()
 			}
 			break;
 		case 2:
-			//billing(usr);
+			billing(usr);
 			break;
 		case 3:
 			free(usr);
@@ -247,6 +253,7 @@ int billingMenu()
 		default:
 			printf("\n\nWrong Choice");
 	}
+  }
   return EXIT_SUCCESS;
 }
 
@@ -275,6 +282,7 @@ USER *process_cdr()
 	}
 	else
 	{
+		
 		while(fgets(line,MAX_LENGTH,fp)!=NULL)
 		{
 			char *token = strtok(line,"|");
@@ -284,8 +292,11 @@ USER *process_cdr()
 				token = strtok(NULL, "|");
 				i++;
 			}
+			
+			i = 0;
 			n++;
 			usr = realloc(usr, n*sizeof(USER));
+			
 			strcpy(usr->msisdn, record[0]);
 			strcpy(usr->opbrand, record[1]);
 			strcpy(usr->opmmc, record[2]);
@@ -295,8 +306,66 @@ USER *process_cdr()
 			strcpy(usr->upload, record[6]);
 			strcpy(usr->thirdpartymsisdn, record[7]);
 			strcpy(usr->thirdpartyopbrand, record[8]);
+			
+		//	printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", usr->msisdn,usr->opbrand,usr->opmmc, usr->calltype, usr->dur, usr->download, usr->upload,usr->thirdpartymsisdn, usr->thirdpartyopbrand);
 		}
 	}
 	fclose(fp);
 	return usr;
 }
+
+/********************************************************************************************************************************************************
+ *
+ * *FUNCTION NAME : billing()
+ *
+ * *DESCRIPTION : This function shows the menu for billing
+ *
+ * *RETURN : Nothing
+ *******************************************************************************************************************************************************/
+void billing(USER *usr)
+{
+	int ch;
+	printf("\n\n 1.Customer Billing \n\n 2.Interoperator Billing\n\n");
+	printf("\n\nChoice: ");
+	scanf("%d", &ch);
+	switch(ch)
+	{
+		case 1: 
+			customerBilling(usr);
+			break;
+		case 2: 
+			interOperatorBilling(usr);
+			break;
+	}
+}
+
+/********************************************************************************************************************************************************
+ *
+ * *FUNCTION NAME : customerBilling
+ *
+ * *DESCRIPTION : This function calculates the customer bill
+ *
+ * *RETURN : Nothing
+ *******************************************************************************************************************************************************/
+
+void customerBilling(USER *usr)
+{
+	printf("\n\nCustomer Bill Generated\n\n");
+}	
+
+
+
+/********************************************************************************************************************************************************
+ *
+ * *FUNCTION NAME : interOperatorBilling
+ *
+ * *DESCRIPTION : This function calculates the interoperator bill
+ *
+ * *RETURN : Nothing
+ *******************************************************************************************************************************************************/
+
+void interOperatorBilling(USER *usr)
+{
+        printf("\n\nCustomer Bill Generated\n\n");
+}
+

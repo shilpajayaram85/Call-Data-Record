@@ -42,4 +42,5 @@ void billing(USER*);
 
 USER* process_cdr();
 
-
+void customerBilling(USER*);
+void interOperatorBilling(USER*);
