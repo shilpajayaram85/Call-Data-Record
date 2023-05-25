@@ -40,6 +40,8 @@ int billingMenu();
 
 void billing(USER*);
 
+void customerBillingDetails(USER*);
+
 USER* process_cdr();
 
 void customerBilling(USER*);

@@ -26,8 +26,8 @@ void mainMenu()
 	while(1)
 	{
 		system("clear");
-		printf("\n\n\n\t Welcome to Call Data Record Application!!!\n\n");
-		printf("\t\t================================================\n\n");
+		printf("\n\n\n\t\t Welcome to Call Data Record Application!!!\n\n");
+		printf("\n\n==============================================================================\n\n");
 		printf("1. Signup\n");
 		printf("2.Login\n");
 		printf("3.Exit\n");
@@ -149,7 +149,6 @@ int userAllowed(char user_name[], char password[])
  * *RETURN : Nothing
  * *****************************************************************************************************************************************************/
 
-
 void logIn()
 {
 	char user_name[MAX_LENGTH];
@@ -266,6 +265,7 @@ int billingMenu()
  * *RETURN : Array of Structure
  * *****************************************************************************************************************************************************/
 
+int n = 0;
 USER *process_cdr()
 {
 	FILE *fp;
@@ -274,7 +274,7 @@ USER *process_cdr()
 	char record[9][MAX_LENGTH];
 	char line[MAX_LENGTH]={0};
 	int i = 0;
-	int n = 0;
+	
 	if(fp == NULL)
 	{
 		printf("\n\nPlease try Later");
@@ -288,6 +288,12 @@ USER *process_cdr()
 			char *token = strtok(line,"|");
 			while(token != NULL)
 			{
+				if(i ==7 && strcmp(record[3],"GPRS")==0)
+				{	
+					strcpy(record[i]," ");
+					i++;
+					continue;
+				}
 				strcpy(record[i],token);
 				token = strtok(NULL, "|");
 				i++;
@@ -297,17 +303,16 @@ USER *process_cdr()
 			n++;
 			usr = realloc(usr, n*sizeof(USER));
 			
-			strcpy(usr->msisdn, record[0]);
-			strcpy(usr->opbrand, record[1]);
-			strcpy(usr->opmmc, record[2]);
-			strcpy(usr->calltype, record[3]);
-			strcpy(usr->dur, record[4]);
-			strcpy(usr->download, record[5]);
-			strcpy(usr->upload, record[6]);
-			strcpy(usr->thirdpartymsisdn, record[7]);
-			strcpy(usr->thirdpartyopbrand, record[8]);
+			strcpy(usr[n-1].msisdn, record[0]);
+			strcpy(usr[n-1].opbrand, record[1]);
+			strcpy(usr[n-1].opmmc, record[2]);
+			strcpy(usr[n-1].calltype, record[3]);
+			strcpy(usr[n-1].dur, record[4]);
+			strcpy(usr[n-1].download, record[5]);
+			strcpy(usr[n-1].upload, record[6]);
+			strcpy(usr[n-1].thirdpartymsisdn, record[7]);
+			strcpy(usr[n-1].thirdpartyopbrand, record[8]);
 			
-		//	printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", usr->msisdn,usr->opbrand,usr->opmmc, usr->calltype, usr->dur, usr->download, usr->upload,usr->thirdpartymsisdn, usr->thirdpartyopbrand);
 		}
 	}
 	fclose(fp);
@@ -331,7 +336,7 @@ void billing(USER *usr)
 	switch(ch)
 	{
 		case 1: 
-			customerBilling(usr);
+			customerBillingDetails(usr);
 			break;
 		case 2: 
 			interOperatorBilling(usr);
@@ -350,7 +355,33 @@ void billing(USER *usr)
 
 void customerBilling(USER *usr)
 {
-	printf("\n\nCustomer Bill Generated\n\n");
+	char msisdn[20];
+	printf("\n\nEnter msisdn number\n");
+	scanf("%s", msisdn);
+	int i;
+	int flag = 0;
+	for(i = 0; i < n; i++)
+	{
+		if(strcmp(usr[i].msisdn, msisdn) == 0)
+		{
+			printf("\n\n==========USER DETAILS===============\n\n");
+			printf("\nMSISDN: %s", usr[i].msisdn);
+			printf("\nBRAND NAME: %s", usr[i].opbrand);
+			printf("\nOP MMC/MNC: %s", usr[i].opmmc);
+			printf("\nCALL TYPE: %s", usr[i].calltype);
+			printf("\nDURATION: %s", usr[i].dur);
+			printf("\nDOWNLOAD: %s", usr[i].download);
+			printf("\nUPLOAD: %s", usr[i].upload);
+			printf("\nTHIRD PARTY MSISDN: %s", usr[i].thirdpartymsisdn);
+			printf("\nTHIRD PARTY BRAND NAME: %s", usr[i].thirdpartyopbrand);
+			flag = 1;
+			break;
+		}
+	}
+	if(flag == 0)
+	{
+	printf("\n\nCustomer not found\n\n");
+	}
 }	
 
 
@@ -366,6 +397,191 @@ void customerBilling(USER *usr)
 
 void interOperatorBilling(USER *usr)
 {
-        printf("\n\nCustomer Bill Generated\n\n");
+	int i;
+	int flag = 0;
+	long int incomingcall = 0, outgoingcall = 0, incomingsms = 0, outgoingsms = 0, downloaded = 0, uploaded = 0;
+	char op_number[20];
+	char opname[MAX_LENGTH] = {0};
+	printf("\n\nEnter the operator number\n");
+	scanf("%s", op_number);
+	for(i = 0;i < n; i++)
+	{
+		if(strcmp(op_number,usr[i].opmmc) == 0)
+		{
+			flag = 1;
+			if(strcmp(usr[i].calltype,"MOC") == 0)
+			{
+				outgoingcall += atol(usr[i].dur);
+			}
+			else if(strcmp(usr[i].calltype,"MTC") == 0)
+                        {
+                                incomingcall += atol(usr[i].dur);
+                        }
+			else if(strcmp(usr[i].calltype,"SMS-MO") == 0)
+                        {
+                                outgoingsms += 1;
+                        }
+			else if(strcmp(usr[i].calltype,"SMS-MT") == 0)
+                        {
+                                incomingsms += 1;
+                        }
+			else if(strcmp(usr[i].calltype,"GPRS") == 0)
+                        {
+                                downloaded += atol(usr[i].download);
+				uploaded += atol(usr[i].upload);
+                        }
+			strcpy(opname, usr[i].opbrand);
+		}
+	}
+	if(flag == 0)
+	{
+
+        	printf("\n\nOperator not Found\n\n");
+	}
+	else
+	{
+		printf("\n======Interoperator Billing===========\n");
+		printf("\nOperator Brand : %s ( %s )", opname,op_number);
+		printf("\nIncoming Voice Call Durations: %ld", incomingcall);
+		printf("\nOutgoing Voice Call Durations: %ld", outgoingcall);
+		printf("\nIncoming SMS Messages: %ld", incomingsms);
+		printf("\nOutgoing SMS Messages: %ld", outgoingsms);
+		printf("\nMB Downloaded: %ld | MB Uploaded: %ld", downloaded,uploaded);
+	}
+
+}
+
+
+/********************************************************************************************************************************************************
+ *
+ * *FUNCTION NAME : customerBillingDetails
+ *
+ * *DESCRIPTION : This function calculates the customer bill
+ *
+ * *RETURN : Nothing
+ *******************************************************************************************************************************************************/
+
+void customerBillingDetails(USER *usr)
+{
+ 	char msisdn[20];
+        printf("\n\nEnter msisdn number\n");
+        scanf("%s", msisdn);
+        int i;
+        int flag = 0;
+        for(i = 0; i < n; i++)
+        {
+		if(strcmp(usr[i].msisdn, msisdn) == 0)
+                {
+                     printf("\nCustomer ID: %s ( %s )", usr[i].msisdn, usr[i].opbrand);
+
+			if( atoi(usr[i].opmmc) == atoi(usr[i].thirdpartyopbrand) )
+			{
+				printf("\n\t* Services within the mobile operator *");
+				if(strcmp(usr[i].calltype,"MTC") == 0 || strcmp(usr[i].calltype, "MOC") == 0)
+				{
+					if(strcmp(usr[i].calltype,"MTC") == 0 )
+					{
+						printf("\n\tIncoming voice call durations: %s", usr[i].dur);
+						printf("\n\tOutgoing voice call durations: 0");
+						printf("\n\tIncoming SMS messages: 0");
+						printf("\n\tOutgoing SMS messages: 0 ");
+					}
+					if(strcmp(usr[i].calltype,"MOC") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: %s",usr[i].dur);
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+                                        }
+				}
+				 if(strcmp(usr[i].calltype,"SMS-MT") == 0 || strcmp(usr[i].calltype, "SMS-MO") == 0)
+                                {
+                                        if(strcmp(usr[i].calltype,"SMS-MT") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: 0");
+                                                printf("\n\tIncoming SMS messages: 1");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+					}
+                                        if(strcmp(usr[i].calltype,"SMS-MO") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: 0");
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 1 ");
+					}
+                                }
+
+				 printf("\n\n* Services outside the mobile operator *");
+				 printf("\n\tIncoming voice call durations: 0");
+                                 printf("\n\tOutgoing voice call durations: 0");
+                                 printf("\n\tIncoming SMS messages: 0");
+                                 printf("\n\tOutgoing SMS messages: 0");
+			}				
+			else
+
+			{
+				 printf("\n\n * Services within the mobile operator *");
+                                 printf("\n\tIncoming voice call durations: 0");
+                                 printf("\n\tOutgoing voice call durations: 0");
+                                 printf("\n\tIncoming SMS messages: 0");
+                                 printf("\n\tOutgoing SMS messages: 0 ");
+					
+				 printf("\n\n * Services outsisde the mobile operator *");
+
+                                if(strcmp(usr[i].calltype,"MTC") == 0 || strcmp(usr[i].calltype, "MOC") == 0)
+                                {
+                                        if(strcmp(usr[i].calltype,"MTC") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: %s", usr[i].dur);
+                                                printf("\n\tOutgoing voice call durations: 0");
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+                                        }
+                                        if(strcmp(usr[i].calltype,"MOC") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: %s",usr[i].dur);
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+                                        }
+                                }
+                                 if(strcmp(usr[i].calltype,"SMS-MT") == 0 || strcmp(usr[i].calltype, "SMS-MO") == 0)
+                                {
+                                        if(strcmp(usr[i].calltype,"SMS-MT") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: 0");
+                                                printf("\n\tIncoming SMS messages: 1");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+                                         }
+                                        if(strcmp(usr[i].calltype,"SMS-MO") == 0 )
+                                        {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: 0");
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 1 ");
+                                        }
+				}
+			}
+			if(strcmp(usr[i].calltype, "GPRS")==0)
+                                {
+                                                printf("\n\tIncoming voice call durations: 0");
+                                                printf("\n\tOutgoing voice call durations: 0");
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+
+                                }
+
+                        printf("\n\t* Internet use *");
+                        printf("\n\tMB downloaded: %s | MB uploaded: %s",usr[i].download,usr[i].upload);
+			flag = 1;
+                        break;
+                }
+        }
+        if(flag == 0)
+        {
+        printf("\n\nCustomer not found\n\n");
+        }
 }
 
