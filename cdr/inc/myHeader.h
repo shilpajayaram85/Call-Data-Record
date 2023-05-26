@@ -31,6 +31,21 @@ struct user
 
 typedef struct user USER;
 
+
+struct interoperator
+{
+	char opname[20];
+	char opmmc[20];
+	long int incomingcall;
+	long int outgoingcall;
+	long int incomingsms;
+	long int outgoingsms;
+	long int downloaded;
+	long int uploaded;
+};
+
+typedef struct interoperator IOP;
+
 void mainMenu();
 void logIn();
 void signUp();
@@ -40,9 +55,10 @@ int billingMenu();
 
 void billing(USER*);
 
-void customerBillingDetails(USER*);
+void customerDetails(USER*);
 
 USER* process_cdr();
 
 void customerBilling(USER*);
 void interOperatorBilling(USER*);
+void interOperatorBillingFile(USER*);

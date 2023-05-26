@@ -1,0 +1,140 @@
+
+# Operator Data Base: 
+
+Operator Brand : Cellcom ( 42500 )
+Incoming Voice Call Durations: 844736
+Outgoing Voice Call Durations: 874157
+Incoming SMS Messages: 4000
+Outgoing SMS Messages: 3990
+MB Downloaded: 408486 | MB Uploaded: 416108
+
+
+
+
+# Operator Data Base: 
+
+Operator Brand : Cellcom ( 42500 )
+Incoming Voice Call Durations: 844736
+Outgoing Voice Call Durations: 874157
+Incoming SMS Messages: 4000
+Outgoing SMS Messages: 3990
+MB Downloaded: 408486 | MB Uploaded: 416108
+
+
+Operator Brand : Partner ( 42501 )
+Incoming Voice Call Durations: 883043
+Outgoing Voice Call Durations: 851048
+Incoming SMS Messages: 3940
+Outgoing SMS Messages: 4017
+MB Downloaded: 439487 | MB Uploaded: 428699
+
+
+
+
+# Operator Data Base: 
+
+Operator Brand : Cellcom ( 42500 )
+Incoming Voice Call Durations: 844736
+Outgoing Voice Call Durations: 874157
+Incoming SMS Messages: 4000
+Outgoing SMS Messages: 3990
+MB Downloaded: 408486 | MB Uploaded: 416108
+
+
+Operator Brand : Partner ( 42501 )
+Incoming Voice Call Durations: 883043
+Outgoing Voice Call Durations: 851048
+Incoming SMS Messages: 3940
+Outgoing SMS Messages: 4017
+MB Downloaded: 439487 | MB Uploaded: 428699
+
+
+Operator Brand : Jio ( 42502 )
+Incoming Voice Call Durations: 876475
+Outgoing Voice Call Durations: 879242
+Incoming SMS Messages: 3907
+Outgoing SMS Messages: 4088
+MB Downloaded: 445752 | MB Uploaded: 418127
+
+
+
+
+# Operator Data Base: 
+
+Operator Brand : Cellcom ( 42500 )
+Incoming Voice Call Durations: 844736
+Outgoing Voice Call Durations: 874157
+Incoming SMS Messages: 4000
+Outgoing SMS Messages: 3990
+MB Downloaded: 408486 | MB Uploaded: 416108
+
+
+Operator Brand : Partner ( 42501 )
+Incoming Voice Call Durations: 883043
+Outgoing Voice Call Durations: 851048
+Incoming SMS Messages: 3940
+Outgoing SMS Messages: 4017
+MB Downloaded: 439487 | MB Uploaded: 428699
+
+
+Operator Brand : Jio ( 42502 )
+Incoming Voice Call Durations: 876475
+Outgoing Voice Call Durations: 879242
+Incoming SMS Messages: 3907
+Outgoing SMS Messages: 4088
+MB Downloaded: 445752 | MB Uploaded: 418127
+
+
+Operator Brand : Airtel ( 42503 )
+Incoming Voice Call Durations: 853500
+Outgoing Voice Call Durations: 882069
+Incoming SMS Messages: 3990
+Outgoing SMS Messages: 3986
+MB Downloaded: 429235 | MB Uploaded: 432627
+
+
+
+
+# Operator Data Base: 
+
+Operator Brand : Cellcom ( 42500 )
+Incoming Voice Call Durations: 844736
+Outgoing Voice Call Durations: 874157
+Incoming SMS Messages: 4000
+Outgoing SMS Messages: 3990
+MB Downloaded: 408486 | MB Uploaded: 416108
+
+
+Operator Brand : Partner ( 42501 )
+Incoming Voice Call Durations: 883043
+Outgoing Voice Call Durations: 851048
+Incoming SMS Messages: 3940
+Outgoing SMS Messages: 4017
+MB Downloaded: 439487 | MB Uploaded: 428699
+
+
+Operator Brand : Jio ( 42502 )
+Incoming Voice Call Durations: 876475
+Outgoing Voice Call Durations: 879242
+Incoming SMS Messages: 3907
+Outgoing SMS Messages: 4088
+MB Downloaded: 445752 | MB Uploaded: 418127
+
+
+Operator Brand : Airtel ( 42503 )
+Incoming Voice Call Durations: 853500
+Outgoing Voice Call Durations: 882069
+Incoming SMS Messages: 3990
+Outgoing SMS Messages: 3986
+MB Downloaded: 429235 | MB Uploaded: 432627
+
+
+Operator Brand : 012 ( 42504 )
+Incoming Voice Call Durations: 862576
+Outgoing Voice Call Durations: 855646
+Incoming SMS Messages: 3905
+Outgoing SMS Messages: 3998
+MB Downloaded: 435195 | MB Uploaded: 422003
+
+
+
