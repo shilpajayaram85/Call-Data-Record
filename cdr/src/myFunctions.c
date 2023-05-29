@@ -338,7 +338,7 @@ void billing(USER *usr)
 	switch(ch)
 	{
 		case 1: 
-			customerBilling(usr);
+			customerBillingFile(usr);
 			break;
 		case 2: 
 			interOperatorBillingFile(usr);
@@ -710,3 +710,169 @@ void interOperatorBillingFile(USER *usr)
    }
 }
 
+
+
+
+/********************************************************************************************************************************************************
+ *
+ * *FUNCTION NAME : customerBillingFile
+ *
+ * *DESCRIPTION : This function calculates the customer bill and writes to file
+ *
+ * *RETURN : Nothing
+ *******************************************************************************************************************************************************/
+
+void customerBillingFile(USER *usr)
+{
+ 	char msisdn[20];
+	FILE *fp;
+	fp = fopen("/home1/trainer02/Call-Data-Record/cdr/data/CB.dat","a+");
+	if(fp == NULL)
+	{
+		printf("\n\n Please try later\n\n");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+        printf("\n\nEnter msisdn number\n");
+        scanf("%s", msisdn);
+        int i;
+        int flag = 0;
+	char msg[MAX_LENGTH];
+	char temp[MAX_LENGTH];
+	for(i = 0; i < n; i++)
+        {
+		if(strcmp(usr[i].msisdn, msisdn) == 0)
+                {
+                     	memset(temp, 0, MAX_LENGTH);
+			sprintf(temp,"\nCustomer ID: %s ( %s )", usr[i].msisdn, usr[i].opbrand);
+			strcpy(msg,temp);
+			if( atoi(usr[i].opmmc) == atoi(usr[i].thirdpartyopbrand) )
+			{
+			
+				memset(temp, 0, MAX_LENGTH);
+				sprintf(temp,"\n\t* Services within the mobile operator *");
+				strcat(msg, temp);
+				if(strcmp(usr[i].calltype,"MTC") == 0 || strcmp(usr[i].calltype, "MOC") == 0)
+				{
+					if(strcmp(usr[i].calltype,"MTC") == 0 )
+
+					{	
+						
+						memset(temp, 0, MAX_LENGTH);
+						sprintf(temp,"\n\tIncoming voice call durations: %s", usr[i].dur);
+						strcat(msg, temp);
+						strcat(msg,"\n\tOutgoing voice call durations: 0");
+						strcat(msg,"\n\tIncoming SMS messages: 0");
+						strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+					}
+					if(strcmp(usr[i].calltype,"MOC") == 0 )
+                                        {
+                                                strcat(msg, "\n\tIncoming voice call durations: 0");
+						memset(temp, 0, MAX_LENGTH);
+                                                sprintf(temp,"\n\tOutgoing voice call durations: %s",usr[i].dur);
+						strcat(msg,temp);
+                                                strcat(msg,"\n\tIncoming SMS messages: 0");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+                                        }
+				}
+				 if(strcmp(usr[i].calltype,"SMS-MT") == 0 || strcmp(usr[i].calltype, "SMS-MO") == 0)
+                                {
+                                        if(strcmp(usr[i].calltype,"SMS-MT") == 0 )
+                                        {
+                                                strcat(msg,"\n\tIncoming voice call durations: 0");
+                                                strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                                strcat(msg,"\n\tIncoming SMS messages: 1");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+					}
+                                        if(strcmp(usr[i].calltype,"SMS-MO") == 0 )
+                                        {
+                                                strcat(msg,"\n\tIncoming voice call durations: 0");
+                                                strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                               	strcat(msg,"\n\tIncoming SMS messages: 0");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 1 ");
+					}
+                                }
+
+				 strcat(msg,"\n\n* Services outside the mobile operator *");
+				 strcat(msg,"\n\tIncoming voice call durations: 0");
+                                 strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                 strcat(msg,"\n\tIncoming SMS messages: 0");
+                                 strcat(msg,"\n\tOutgoing SMS messages: 0");
+			}
+			else
+
+			{
+				 strcat(msg,"\n\n * Services within the mobile operator *");
+                                 strcat(msg,"\n\tIncoming voice call durations: 0");
+                                 strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                 strcat(msg,"\n\tIncoming SMS messages: 0");
+                                 strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+
+				 strcat(msg,"\n\n * Services outsisde the mobile operator *");
+
+                                if(strcmp(usr[i].calltype,"MTC") == 0 || strcmp(usr[i].calltype, "MOC") == 0)
+                                {
+                                        if(strcmp(usr[i].calltype,"MTC") == 0 )
+                                        {
+                                                memset(temp,0,MAX_LENGTH);
+						sprintf(temp,"\n\tIncoming voice call durations: %s", usr[i].dur);
+						strcat(msg,temp);
+                                                strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                                strcat(msg,"\n\tIncoming SMS messages: 0");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+                                        }
+                                        if(strcmp(usr[i].calltype,"MOC") == 0 )
+                                        {
+                                                strcat(msg,"\n\tIncoming voice call durations: 0");
+						memset(temp,0,MAX_LENGTH);
+                                                sprintf(temp,"\n\tOutgoing voice call durations: %s",usr[i].dur);
+						strcat(msg,temp);
+                                                printf("\n\tIncoming SMS messages: 0");
+                                                printf("\n\tOutgoing SMS messages: 0 ");
+                                        }
+                                }
+                                 if(strcmp(usr[i].calltype,"SMS-MT") == 0 || strcmp(usr[i].calltype, "SMS-MO") == 0)
+                                {
+                                        if(strcmp(usr[i].calltype,"SMS-MT") == 0 )
+                                        {
+                                                strcat(msg,"\n\tIncoming voice call durations: 0");
+                                                strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                                strcat(msg,"\n\tIncoming SMS messages: 1");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+                                         }
+                                        if(strcmp(usr[i].calltype,"SMS-MO") == 0 )
+                                        {
+                                                strcat(msg,"\n\tIncoming voice call durations: 0");
+                                                strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                                strcat(msg,"\n\tIncoming SMS messages: 0");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 1 ");
+                                        }
+				}
+			}
+			if(strcmp(usr[i].calltype, "GPRS")==0)
+                                {
+                                                strcat(msg,"\n\tIncoming voice call durations: 0");
+                                                strcat(msg,"\n\tOutgoing voice call durations: 0");
+                                                strcat(msg,"\n\tIncoming SMS messages: 0");
+                                                strcat(msg,"\n\tOutgoing SMS messages: 0 ");
+
+                                }
+
+                        strcat(msg,"\n\t* Internet use *");
+			memset(temp,0,MAX_LENGTH);
+                        sprintf(temp,"\n\tMB downloaded: %s | MB uploaded: %s",usr[i].download,usr[i].upload);
+			strcat(msg,temp);
+			 fprintf(fp, "%s\n\n", msg);
+                	printf("\n\n%s\n\n", msg);
+	
+			flag = 1;
+                        break;
+                }
+        }
+        if(flag == 0)
+        {
+        printf("\n\nCustomer not found\n\n");
+        }
+}
+}

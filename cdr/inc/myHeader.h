@@ -62,3 +62,4 @@ USER* process_cdr();
 void customerBilling(USER*);
 void interOperatorBilling(USER*);
 void interOperatorBillingFile(USER*);
+void customerBillingFile(USER*);
